@@ -1,5 +1,6 @@
 # Use an official OpenJDK base image
-FROM openjdk:17-jdk-slim
+#FROM openjdk:17-jdk-slim
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 
 # Set working directory
 WORKDIR /app
