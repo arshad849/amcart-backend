@@ -3,6 +3,8 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo "Running Maven build to create JAR"
+      - mvn clean package
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 779846822985.dkr.ecr.ap-south-1.amazonaws.com
   build:
