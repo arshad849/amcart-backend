@@ -2,6 +2,8 @@
 #FROM openjdk:17-jdk-slim
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+
 # Set working directory
 WORKDIR /app
 
