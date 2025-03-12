@@ -1,8 +1,37 @@
+/*
 package com.nagp.products.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nagp.products.entity.Product;
+@Slf4j
+@Service
+public class OpenSearchService {
+    private final String INDEX_NAME = "products";
+
+    public void findByLastName(final String lastName) {
+
+        var match= QueryBuilders.match().field("lastname").query(FieldValue.of(lastName)).fuzziness("AUTO").build();
+
+        NativeQuery searchQuery = new NativeQueryBuilder().withQuery(match).build();
+        SearchHits<Customer> productHits =
+                elasticsearchOperations
+                        .search(searchQuery, Customer.class,
+                                IndexCoordinates.of(BOOTFULSEARCH));
+
+        log.info("productHits {} {}", productHits.getSearchHits().size(), productHits.getSearchHits());
+
+        List<SearchHit<Customer>> searchHits =
+                productHits.getSearchHits();
+        int i = 0;
+        for (SearchHit<Customer> searchHit : searchHits) {
+            log.info("searchHit {}", searchHit);
+        }
+
+    }
+}
+
+*/
+/*import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nagp.products.model.ProductModel;
+import lombok.extern.slf4j.Slf4j;
 import org.opensearch.action.index.IndexRequest;
 import org.opensearch.action.index.IndexResponse;
 import org.opensearch.action.search.SearchRequest;
@@ -24,6 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class OpenSearchService {
     @Autowired
@@ -33,7 +63,6 @@ public class OpenSearchService {
 
     private final String INDEX_NAME = "products";
 
-    // ✅ Create Index
     public boolean createIndex() throws IOException {
         GetIndexRequest request = new GetIndexRequest(INDEX_NAME);
         boolean exists = client.indices().exists(request, RequestOptions.DEFAULT);
@@ -46,7 +75,6 @@ public class OpenSearchService {
         return true;
     }
 
-    // ✅ Store Product in OpenSearch
     public String saveProduct(ProductModel product) throws IOException {
         IndexRequest request = new IndexRequest(INDEX_NAME)
                 .id(product.getProductId())
@@ -55,16 +83,13 @@ public class OpenSearchService {
         return response.getId();
     }
 
-    // ✅ Search Product by Name or Description (Full-Text Search)
     public List<ProductModel> searchProducts(String query) throws IOException {
-        //String searchJson = "{ \"query\": { \"multi_match\": { \"query\": \"" + query + "\", \"fields\": [\"name\", \"description\"] } } }";
         MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(query, "name", "description");
 
         // Build the search request
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(queryBuilder);
         SearchRequest request = new SearchRequest(INDEX_NAME);
-        //request.source().query(searchJson);
         request.source(searchSourceBuilder);
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
 
@@ -73,6 +98,7 @@ public class OpenSearchService {
             try {
                 products.add(objectMapper.readValue(hit.getSourceAsString(), ProductModel.class));
             } catch (IOException e) {
+                log.error(e.getLocalizedMessage());
                 e.printStackTrace();
             }
         });
@@ -80,9 +106,7 @@ public class OpenSearchService {
         return products;
     }
 
-    // ✅ Autocomplete Suggestion
     public List<String> autocomplete(String prefix) throws IOException {
-        //String searchJson = "{ \"suggest\": { \"product_suggest\": { \"prefix\": \"" + prefix + "\", \"completion\": { \"field\": \"name\" } } } }";
 
         MatchPhrasePrefixQueryBuilder queryBuilder = QueryBuilders.matchPhrasePrefixQuery("name", prefix);
 
@@ -94,7 +118,6 @@ public class OpenSearchService {
         request.source(searchSourceBuilder);
 
         // Execute search
-        //SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
 
         List<String> suggestions = new ArrayList<>();
@@ -104,4 +127,92 @@ public class OpenSearchService {
 
         return suggestions;
     }
+}*//*
+
+*/
+/*import com.nagp.products.model.ProductModel;
+import software.amazon.awssdk.services.opensearch.OpenSearchClient;
+import software.amazon.awssdk.services.opensearch.model.*;
+
+import java.util.List;
+import java.util.ArrayList;
+public class OpenSearchService {
+
+    private final OpenSearchClient client;
+
+    public OpenSearchService(OpenSearchClient client) {
+        this.client = client;
+    }
+
+//    public boolean createIndex() {
+//        try {
+//            CreateIndexResponse response = client.createIndex(CreateIndexRequest.builder()
+//                    .index("products")
+//                    .build());
+//            return response.acknowledged();
+//        } catch (OpenSearchException e) {
+//            System.out.println("Index already exists or error: " + e.getMessage());
+//            return false;
+//        }
+//    }
+
+    public String saveProduct(ProductModel product) {
+        try {
+            IndexResponse response = client.index(IndexRequest.builder()
+                    .index("products")
+                    .id(product.getProductId())
+                    .document(product)
+                    .build());
+            return response.result().toString();
+        } catch (Exception e) {
+            System.out.println("Error indexing document: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public List<ProductModel> searchProducts(String query) {
+        List<ProductModel> products = new ArrayList<>();
+        try {
+            SearchResponse<ProductModel> response = client.search(SearchRequest.builder()
+                    .index("products")
+                    .q(query)
+                    .build(), ProductModel.class);
+
+            response.hits().hits().forEach(hit -> products.add(hit.source()));
+        } catch (Exception e) {
+            System.out.println("Error searching: " + e.getMessage());
+        }
+        return products;
+    }
+}*//*
+
+
+@Slf4j
+@Service
+public class OpenSearchService {
+    private final String INDEX_NAME = "products";
+
+    public void findByLastName(final String lastName) {
+
+        var match= QueryBuilders.match().field("lastname").query(FieldValue.of(lastName)).fuzziness("AUTO").build();
+
+        NativeQuery searchQuery = new NativeQueryBuilder().withQuery(match).build();
+        SearchHits<Customer> productHits =
+                elasticsearchOperations
+                        .search(searchQuery, Customer.class,
+                                IndexCoordinates.of(BOOTFULSEARCH));
+
+        log.info("productHits {} {}", productHits.getSearchHits().size(), productHits.getSearchHits());
+
+        List<SearchHit<Customer>> searchHits =
+                productHits.getSearchHits();
+        int i = 0;
+        for (SearchHit<Customer> searchHit : searchHits) {
+            log.info("searchHit {}", searchHit);
+        }
+
+    }
 }
+
+
+*/

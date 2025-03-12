@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    @Autowired
+   /* @Autowired
     private OpenSearchService openSearchService;
 
     public boolean createIndex() throws IOException {
@@ -27,5 +27,5 @@ public class ProductService {
 
     public List<String> autocomplete(String prefix) throws IOException {
         return openSearchService.autocomplete(prefix);
-    }
+    }*/
 }

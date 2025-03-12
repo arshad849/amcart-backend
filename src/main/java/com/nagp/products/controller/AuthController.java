@@ -1,0 +1,66 @@
+package com.nagp.products.controller;
+
+import com.nagp.products.model.TokenRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    @PostMapping("/store-token")
+    public ResponseEntity<?> storeToken(@RequestBody TokenRequest tokenRequest, HttpServletResponse response) {
+        log.info("Received request for Store token");
+        addCookie(response, "id_token", tokenRequest.getIdToken());
+        addCookie(response, "access_token", tokenRequest.getAccessToken());
+        addCookie(response, "refresh_token", tokenRequest.getRefreshToken());
+
+        return ResponseEntity.ok("Tokens stored securely");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        log.info("Received request for logout");
+        removeCookie(response, "id_token");
+        removeCookie(response, "access_token");
+        removeCookie(response, "refresh_token");
+
+        return ResponseEntity.ok("Logged out");
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Boolean>> checkAuthStatus(@CookieValue(name = "access_token", required = false) String token) {
+        log.info("Received request for status {}", token);
+        boolean isAuthenticated = (token != null);
+        return ResponseEntity.ok(Collections.singletonMap("authenticated", isAuthenticated));
+    }
+
+
+    private void addCookie(HttpServletResponse response, String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600); // 1 hour
+        response.addCookie(cookie);
+    }
+
+    private void removeCookie(HttpServletResponse response, String name) {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
+
+}

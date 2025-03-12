@@ -3,6 +3,7 @@ package com.nagp.products.config;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -23,11 +24,11 @@ public class DynamoDbConfig {
     @Value("${aws.region}")
     private String awsRegion;
 
-    @Value("${aws.dynamodb.accessKey}")
+/*    @Value("${aws.dynamodb.accessKey}")
     private String dynamodbAccessKey;
 
     @Value("${aws.dynamodb.secretKey}")
-    private String dynamodbSecretKey;
+    private String dynamodbSecretKey;*/
 
     /*@Value("${aws.dynamo.sessionToken}")
     private String dynamodbSessionToken;*/
@@ -37,7 +38,7 @@ public class DynamoDbConfig {
         return new DynamoDBMapper(buildAmazonDynamoDB());
     }
 
-    private AmazonDynamoDB buildAmazonDynamoDB() {
+    /*private AmazonDynamoDB buildAmazonDynamoDB() {
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
@@ -54,6 +55,18 @@ public class DynamoDbConfig {
                                 )
                         )
                 )
+                .build();
+    }*/
+
+    public AmazonDynamoDB buildAmazonDynamoDB() {
+        return AmazonDynamoDBClientBuilder
+                .standard()
+                .withEndpointConfiguration(
+                        new AwsClientBuilder.EndpointConfiguration(
+                                dynamodbEndpoint, awsRegion
+                        )
+                )
+                .withCredentials(new DefaultAWSCredentialsProviderChain()) // Uses default credentials
                 .build();
     }
 
