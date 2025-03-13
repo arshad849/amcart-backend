@@ -8,6 +8,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,11 +34,11 @@ public class DynamoDbConfig {
     /*@Value("${aws.dynamo.sessionToken}")
     private String dynamodbSessionToken;*/
 
-    @Bean
+   /* @Bean
     public DynamoDBMapper dynamoDBMapper() {
         return new DynamoDBMapper(buildAmazonDynamoDB());
     }
-
+*/
     /*private AmazonDynamoDB buildAmazonDynamoDB() {
         return AmazonDynamoDBClientBuilder
                 .standard()
@@ -58,7 +59,7 @@ public class DynamoDbConfig {
                 .build();
     }*/
 
-    public AmazonDynamoDB buildAmazonDynamoDB() {
+    /*public AmazonDynamoDB buildAmazonDynamoDB() {
         return AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
@@ -68,6 +69,17 @@ public class DynamoDbConfig {
                 )
                 .withCredentials(new DefaultAWSCredentialsProviderChain()) // Uses default credentials
                 .build();
+    }*/
+
+    @Bean
+    public DynamoDBMapper dynamoDbMapper() {
+        DynamoDBMapperConfig dynamoDBMapperConfig =
+                DynamoDBMapperConfig.builder()
+                        .withTableNameOverride(
+                                DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement("Products"))
+                        .build();
+        AmazonDynamoDB dynamoDbClient = AmazonDynamoDBClientBuilder.standard().build();
+        return new DynamoDBMapper(dynamoDbClient, dynamoDBMapperConfig);
     }
 
 }
