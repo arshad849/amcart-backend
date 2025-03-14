@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @RequestMapping(value = "/store-token", method = { RequestMethod.GET, RequestMethod.POST })
+    @PostMapping("/store-token")
     public ResponseEntity<?> storeToken(@RequestBody TokenRequest tokenRequest, HttpServletResponse response) {
         log.info("Received request for Store token");
         addCookie(response, "id_token", tokenRequest.getIdToken());
@@ -30,6 +30,17 @@ public class AuthController {
         headers.add("Access-Control-Allow-Credentials", "true");
 
         return ResponseEntity.ok().headers(headers).body("Tokens stored securely");
+    }
+
+    @RequestMapping(value = "/store-token", method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions() {
+        log.info("Received request for Store token to handle options");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "https://d1de3c8mspzt29.cloudfront.net")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization")
+                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+                .build();
     }
 
     @PostMapping("/logout")
