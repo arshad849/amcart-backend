@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,11 @@ public class AuthController {
         addCookie(response, "access_token", tokenRequest.getAccessToken());
         addCookie(response, "refresh_token", tokenRequest.getRefreshToken());
 
-        return ResponseEntity.ok("Tokens stored securely");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "https://d1de3c8mspzt29.cloudfront.net");
+        headers.add("Access-Control-Allow-Credentials", "true");
+
+        return ResponseEntity.ok().headers(headers).body("Tokens stored securely");
     }
 
     @PostMapping("/logout")
