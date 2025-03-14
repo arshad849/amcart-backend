@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @PostMapping("/store-token")
+    @RequestMapping(value = "/store-token", method = { RequestMethod.GET, RequestMethod.POST })
     public ResponseEntity<?> storeToken(@RequestBody TokenRequest tokenRequest, HttpServletResponse response) {
         log.info("Received request for Store token");
         addCookie(response, "id_token", tokenRequest.getIdToken());
