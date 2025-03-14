@@ -32,7 +32,7 @@ public class AuthController {
         return ResponseEntity.ok().headers(headers).body("Tokens stored securely");
     }
 
-    @RequestMapping(value = "/store-token", method = RequestMethod.OPTIONS)
+    /*@RequestMapping(value = "/store-token", method = RequestMethod.OPTIONS)
     public ResponseEntity<?> handleOptions() {
         log.info("Received request for Store token to handle options");
         return ResponseEntity.ok()
@@ -41,7 +41,7 @@ public class AuthController {
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization")
                 .header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
                 .build();
-    }
+    }*/
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
