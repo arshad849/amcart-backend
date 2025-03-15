@@ -19,7 +19,7 @@ public class OpenSearchConfig {
 
     @Bean
     public RestClient restClient() {
-        return RestClient.builder(new HttpHost(OPENSEARCH_DOMAIN, 443, "https"))
+        return RestClient.builder( new HttpHost(OPENSEARCH_DOMAIN, 443, "https"))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     return httpClientBuilder.addInterceptorFirst(
                             new AWSRequestSigningInterceptor("es", Region.of(awsRegion))
