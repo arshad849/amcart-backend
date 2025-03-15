@@ -10,22 +10,22 @@ import java.util.List;
 @Service
 public class ProductService {
 
-   /* @Autowired
+    @Autowired
     private OpenSearchService openSearchService;
 
-    public boolean createIndex() throws IOException {
+    /*public boolean createIndex() throws IOException {
         return openSearchService.createIndex();
     }
 
     public String addProduct(ProductModel product) throws IOException {
         return openSearchService.saveProduct(product);
-    }
+    }*/
 
     public List<ProductModel> searchProducts(String query) throws IOException {
-        return openSearchService.searchProducts(query);
+        return openSearchService.searchProduct(query);
     }
 
     public List<String> autocomplete(String prefix) throws IOException {
         return openSearchService.autocomplete(prefix);
-    }*/
+    }
 }

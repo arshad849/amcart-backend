@@ -32,17 +32,6 @@ public class AuthController {
         return ResponseEntity.ok().headers(headers).body("Tokens stored securely");
     }
 
-    /*@RequestMapping(value = "/store-token", method = RequestMethod.OPTIONS)
-    public ResponseEntity<?> handleOptions() {
-        log.info("Received request for Store token to handle options");
-        return ResponseEntity.ok()
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "https://d1de3c8mspzt29.cloudfront.net")
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "OPTIONS, POST")
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization")
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
-                .build();
-    }*/
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         log.info("Received request for logout");

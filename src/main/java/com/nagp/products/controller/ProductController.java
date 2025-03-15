@@ -94,7 +94,7 @@ public class ProductController {
         return repo.getAllProducts(limit, parsedLastEvaluatedKey);
     }
 
-/*    @GetMapping("/search")
+    @GetMapping("/search")
     public List<ProductModel> search(@RequestParam String query) throws IOException {
         log.info("Received search request for query {}", query);
         return productService.searchProducts(query);
@@ -104,7 +104,7 @@ public class ProductController {
     public List<String> autocomplete(@RequestParam String prefix) throws IOException {
         log.info("Received autocomplete request for prefix {}", prefix);
         return productService.autocomplete(prefix);
-    }*/
+    }
 
     
 }

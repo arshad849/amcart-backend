@@ -1,6 +1,90 @@
-/*
+
 package com.nagp.products.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nagp.products.model.ProductModel;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class OpenSearchService {
+
+    private final RestClient restClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public List<ProductModel>  searchProduct(String keyword) {
+        List<ProductModel> productList = new ArrayList<>();
+        log.info("inside searchProduct method of search service with query : {}", keyword);
+        try {
+            Request request = new Request("POST", "/products/_search");
+            String queryJson = "{ \"query\": { \"match\": { \"name\": \"" + keyword + "\" } } }";
+
+            request.setEntity(new StringEntity(queryJson, ContentType.APPLICATION_JSON));
+            Response response = restClient.performRequest(request);
+            log.info("response from client {}", response.toString());
+            String responseBody = new String(response.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+            log.info("response body from client {}", responseBody);
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+            JsonNode hitsNode = rootNode.path("hits").path("hits");
+
+            // Convert JSON results to Product objects
+            for (JsonNode hit : hitsNode) {
+                JsonNode sourceNode = hit.path("_source");
+                ProductModel product = objectMapper.treeToValue(sourceNode, ProductModel.class);
+                product.setProductId(hit.path("_id").asText());
+                productList.add(product);
+            }
+            log.info("product list {}",productList);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        return productList;
+    }
+
+    public List<String> autocomplete(String prefix) {
+        log.info("inside autocomplete method of search service with query : {}", prefix);
+        List<String> suggestions = new ArrayList<>();
+        try {
+            Request request = new Request("POST", "/products/_search");
+            String queryJson = "{ \"suggest\": { \"product-suggest\": { \"prefix\": \"" + prefix + "\", \"completion\": { \"field\": \"name.autocomplete\" } } } }";
+
+            request.setEntity(new StringEntity(queryJson, ContentType.APPLICATION_JSON));
+            Response response = restClient.performRequest(request);
+            log.info("response from client {}", response.toString());
+            String responseBody = new String(response.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+            log.info("response body from client {}", responseBody);
+            JsonNode rootNode = objectMapper.readTree(responseBody);
+            JsonNode suggestNode = rootNode.path("suggest").path("product-suggest");
+            for (JsonNode entry : suggestNode) {
+                for (JsonNode option : entry.path("options")) {
+                    String suggestion = option.path("text").asText();
+                    suggestions.add(suggestion);
+                }
+            }
+            log.info("suggestions list {}",suggestions);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        return suggestions;
+    }
+}
+/*
 @Slf4j
 @Service
 public class OpenSearchService {

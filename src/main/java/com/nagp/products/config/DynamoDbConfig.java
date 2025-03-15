@@ -25,52 +25,6 @@ public class DynamoDbConfig {
     @Value("${aws.region}")
     private String awsRegion;
 
-/*    @Value("${aws.dynamodb.accessKey}")
-    private String dynamodbAccessKey;
-
-    @Value("${aws.dynamodb.secretKey}")
-    private String dynamodbSecretKey;*/
-
-    /*@Value("${aws.dynamo.sessionToken}")
-    private String dynamodbSessionToken;*/
-
-   /* @Bean
-    public DynamoDBMapper dynamoDBMapper() {
-        return new DynamoDBMapper(buildAmazonDynamoDB());
-    }
-*/
-    /*private AmazonDynamoDB buildAmazonDynamoDB() {
-        return AmazonDynamoDBClientBuilder
-                .standard()
-                .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(
-                                dynamodbEndpoint,
-                                awsRegion
-                        )
-                )
-                .withCredentials(
-                        new AWSStaticCredentialsProvider(
-                                new BasicAWSCredentials(
-                                        dynamodbAccessKey,
-                                        dynamodbSecretKey
-                                )
-                        )
-                )
-                .build();
-    }*/
-
-    /*public AmazonDynamoDB buildAmazonDynamoDB() {
-        return AmazonDynamoDBClientBuilder
-                .standard()
-                .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration(
-                                dynamodbEndpoint, awsRegion
-                        )
-                )
-                .withCredentials(new DefaultAWSCredentialsProviderChain()) // Uses default credentials
-                .build();
-    }*/
-
     @Bean
     public DynamoDBMapper dynamoDbMapper() {
         DynamoDBMapperConfig dynamoDBMapperConfig =

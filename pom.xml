@@ -41,6 +41,13 @@
 				<artifactId>aws-java-sdk-s3</artifactId>
 				<version>1.12.375</version>
 			</dependency>
+			<!--<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.26.20</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -70,12 +77,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.opensearch.client</groupId>
-			<artifactId>opensearch-rest-high-level-client</artifactId>
-			<version>2.18.0</version> <!-- Check latest version -->
-		</dependency>
-
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
@@ -85,6 +86,7 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -106,6 +108,29 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>5.2</version>
+		</dependency>-->
+
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-client</artifactId>
+			<version>7.10.2</version>  <!-- AWS OpenSearch supports up to 7.10 -->
+		</dependency>
+
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>auth</artifactId>
+			<version>2.21.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>http-client-spi</artifactId>
+			<version>2.21.0</version>
 		</dependency>
 
 		<!--<dependency>
