@@ -38,13 +38,12 @@ public class ProductRepository {
 
     public List<Product> getProductByLabel(String label){
         log.info("getting product for the label : {}", label);
-        Product product = new Product();
-        product.setCategory(label);
 
         DynamoDBQueryExpression<Product> queryExpression = new DynamoDBQueryExpression<Product>()
-                .withIndexName("label-index") // Ensure category is indexed
+                .withIndexName("label-index")
                 .withConsistentRead(false)
-                .withHashKeyValues(product);
+                .withKeyConditionExpression("label = :labelValue")
+                .withExpressionAttributeValues(Map.of(":labelValue", new AttributeValue().withS(label)));
 
         return dynamoDBMapper.query(Product.class, queryExpression);
     }
@@ -57,13 +56,12 @@ public class ProductRepository {
     // Get products by category
     public List<Product> getProductsByCategory(String category) {
         log.info("Fetching products for category {}", category);
-        Product product = new Product();
-        product.setCategory(category);
 
         DynamoDBQueryExpression<Product> queryExpression = new DynamoDBQueryExpression<Product>()
                 .withIndexName("category-index") // Ensure category is indexed
                 .withConsistentRead(false)
-                .withHashKeyValues(product);
+                .withKeyConditionExpression("category = :categoryValue")
+                .withExpressionAttributeValues(Map.of(":categoryValue", new AttributeValue().withS(category)));
 
         return dynamoDBMapper.query(Product.class, queryExpression);
     }

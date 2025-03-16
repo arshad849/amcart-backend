@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,14 @@ public class AuthController {
         log.info("Received request for status {}", token);
         boolean isAuthenticated = (token != null);
         return ResponseEntity.ok(Collections.singletonMap("authenticated", isAuthenticated));
+    }
+
+    @GetMapping("/token")
+    public ResponseEntity<Map<String, String>> getTokenFromCookie(@CookieValue(name = "access_token", required = false) String accessToken) {
+        if (accessToken == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No token found"));
+        }
+        return ResponseEntity.ok(Map.of("access_token", accessToken));
     }
 
 
