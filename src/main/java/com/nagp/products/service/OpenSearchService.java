@@ -1,4 +1,4 @@
-
+/*
 package com.nagp.products.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -83,7 +83,7 @@ public class OpenSearchService {
         }
         return suggestions;
     }
-}
+}*/
 /*
 @Slf4j
 @Service

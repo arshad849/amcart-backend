@@ -6,6 +6,7 @@ import com.nagp.products.entity.Product;
 import com.nagp.products.model.ProductModel;
 import com.nagp.products.repository.ProductRepository;
 import com.nagp.products.service.FileService;
+import com.nagp.products.service.OpenSearchRestService;
 import com.nagp.products.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ public class ProductController {
     @Autowired
     FileService fileService;
 
+    /*@Autowired
+    ProductService productService;*/
+
     @Autowired
-    ProductService productService;
+    OpenSearchRestService productService;
     
     @PostMapping
     public ResponseEntity<String> addProduct(@RequestBody Product product) {
@@ -95,7 +99,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<ProductModel> search(@RequestParam String query) throws IOException {
+    public List<ProductModel> search(@RequestParam String query) throws Exception {
         log.info("Received search request for query {}", query);
         return productService.searchProducts(query);
     }

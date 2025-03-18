@@ -109,16 +109,34 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>7.10.2</version>
+		</dependency>
+
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>7.10.2</version>
+		</dependency>-->
+
 		<!--<dependency>
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
 			<version>5.2</version>
 		</dependency>-->
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.elasticsearch.client</groupId>
 			<artifactId>elasticsearch-rest-client</artifactId>
-			<version>7.10.2</version>  <!-- AWS OpenSearch supports up to 7.10 -->
+			<version>7.10.2</version>  &lt;!&ndash; AWS OpenSearch supports up to 7.10 &ndash;&gt;
 		</dependency>
 
 		<dependency>
@@ -131,7 +149,7 @@
 			<groupId>software.amazon.awssdk</groupId>
 			<artifactId>http-client-spi</artifactId>
 			<version>2.21.0</version>
-		</dependency>
+		</dependency>-->
 
 		<!--<dependency>
 			<groupId>org.opensearch.client</groupId>

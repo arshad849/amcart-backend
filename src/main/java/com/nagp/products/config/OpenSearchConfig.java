@@ -1,4 +1,4 @@
-
+/*
 package com.nagp.products.config;
 
 import org.apache.http.HttpHost;
@@ -27,7 +27,7 @@ public class OpenSearchConfig {
                 })
                 .build();
     }
-}
+}*/
 /*
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;

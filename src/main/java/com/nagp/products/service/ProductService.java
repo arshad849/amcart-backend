@@ -11,7 +11,7 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private OpenSearchService openSearchService;
+    private OpenSearchRestService openSearchService;
 
     /*public boolean createIndex() throws IOException {
         return openSearchService.createIndex();
@@ -22,10 +22,10 @@ public class ProductService {
     }*/
 
     public List<ProductModel> searchProducts(String query) throws IOException {
-        return openSearchService.searchProduct(query);
+        return openSearchService.searchProducts(query);
     }
 
-    public List<String> autocomplete(String prefix) throws IOException {
+    /*public List<String> autocomplete(String prefix) throws IOException {
         return openSearchService.autocomplete(prefix);
-    }
+    }*/
 }
