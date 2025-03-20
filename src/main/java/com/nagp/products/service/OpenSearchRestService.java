@@ -36,7 +36,8 @@ public class OpenSearchRestService {
 
     public List<ProductModel> searchProducts(String query) throws IOException {
         //String searchJson = "{ \"query\": { \"multi_match\": { \"query\": \"" + query + "\", \"fields\": [\"name\", \"description\"] } } }";
-        MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(query, "name", "description");
+        MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(query, "name", "description")
+                .fuzziness("AUTO");
 
         // Build the search request
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
